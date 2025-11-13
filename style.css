@@ -1,0 +1,58 @@
+*{
+    box-sizing: border-box;
+}
+.container {
+    padding: 5rem;
+    
+}
+
+.display-book {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+
+}
+
+.card {
+    background-color: #d9c722;
+    padding: 1rem;
+    border-radius: 1rem ;
+    height: 18rem;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: 1.5fr repeat(4,1fr);
+    align-content: center;
+    
+}
+
+.title {
+    font-size: 1.8rem;
+    grid-column: span 2;
+    border-bottom: 2px grey solid;
+}
+.author{
+    grid-column: span 2;
+}
+.pages{
+    grid-column: span 2;
+}
+.isRead{
+    grid-column: span 2;
+}
+
+.addBook {
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    bottom: 5rem;
+    right: 5rem;
+    
+}
+
+button{
+    appearance: none;
+    width: 5rem;
+    border: none ;
+    border-radius: 2rem;
+    height: 80%;
+}

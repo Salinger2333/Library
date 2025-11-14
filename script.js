@@ -1,4 +1,4 @@
-let myLibrary = []
+const myLibrary = []
 function Book(title, author, pages, isRead) {
     this.title = title
     this.author = author
@@ -55,14 +55,13 @@ myLibrary.forEach((book) => {
     addCardEl(book)
 })
 console.log(myLibrary);
-const deleteBtn = document.querySelectorAll('.deleteBtn')
-const resetBtn = document.querySelectorAll('.resetBtn')
+
 const bookCards = document.querySelectorAll('.card')
 function deleteBook(e) {
     const uid = e.target.closest('.card').dataset.uid
-    myLibrary = myLibrary.filter((book) => {
-        return book['uid'] !== uid
-    })
+    // 直接修改数组内容，不重新赋值
+    const idx = myLibrary.findIndex(book => book.uid === uid)
+    if (idx > -1) myLibrary.splice(idx, 1)
     e.target.closest('.card').remove()
     console.log('delete card');
 }
@@ -84,8 +83,8 @@ function resetBook(e) {
 
 }
 
-bookCards.forEach((bookCard) => {
-    bookCard.addEventListener('click', (e) => {
+if (display) {
+    display.addEventListener('click', (e) => {
         if (e.target.classList.contains('deleteBtn')) {
             deleteBook(e)
         }
@@ -93,22 +92,33 @@ bookCards.forEach((bookCard) => {
             resetBook(e)
         }
     })
-})
+}
 const dialog = document.querySelector('dialog')
 const addBtn = document.querySelector('.addBook')
 const subBtn = document.querySelector('#subBtn')
 const cancelBtn = document.querySelector('#cancelBtn')
-addBtn.addEventListener('click',(e) => {
+addBtn.addEventListener('click', (e) => {
     dialog.showModal()
 })
 
-cancelBtn.addEventListener('click',(e) => {
+cancelBtn.addEventListener('click', (e) => {
     dialog.close()
 })
 
-subBtn.addEventListener('click',(e) => {
+subBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    
+    const form = document.querySelector('.new-book')
+    const title = document.querySelector('#book-title').value
+    const author = document.querySelector('#book-author').value
+    const pages = document.querySelector('#book-pages').value
+    const isRead = document.querySelector('#book-isRead').value === '1'
+    const newBook = new Book(title, author, pages, isRead)
+    addBookToLibrary(newBook)
+    addCardEl(newBook)
+    form.reset()
+    dialog.close()
+
+    console.log('book added:', newBook)
 })
 
 

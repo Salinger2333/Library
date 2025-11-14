@@ -12,13 +12,35 @@
     <div class="container">
         <div class="display-book"></div>
     </div>
-    <div class="addBook">
+    <div class="addBook" role="dialog">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <title>add new book</title>
             <path
                 d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
         </svg>
     </div>
+    <dialog  id="addBookDialog" >
+        <form class="new-book" >
+            <div class="new-book-row">
+                <label for="book-title">Title</label><input name="title" id="book-title" type="text" required>
+            </div>
+            <div class="new-book-row">
+                <label for="book-author">Author</label><input name="author" id="book-author" type="text" required>
+            </div>
+            <div class="new-book-row">
+                <label for="book-pages">Pages</label><input name="pages" id="book-pages" type="text" required>
+            </div>
+            <div class="new-book-row">
+                <label for="book-isRead">Read yet?</label>
+                <select name="isRead" id="book-isRead" required>
+                    <option value="1">already read</option>
+                    <option value="0">not read yet</option>
+                </select>
+            </div>
+            <button type="button" id="cancelBtn" autofocus>cancel</button>
+            <button type="submit" id="subBtn">submit</button>
+        </form>
+    </dialog>
 </body>
 <script src="script.js"></script>
 

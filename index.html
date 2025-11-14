@@ -19,8 +19,8 @@
                 d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
         </svg>
     </div>
-    <dialog  id="addBookDialog" >
-        <form class="new-book" >
+    <dialog id="addBookDialog">
+        <form class="new-book">
             <div class="new-book-row">
                 <label for="book-title">Title</label><input name="title" id="book-title" type="text" required>
             </div>
@@ -37,8 +37,10 @@
                     <option value="0">not read yet</option>
                 </select>
             </div>
-            <button type="button" id="cancelBtn" autofocus>cancel</button>
-            <button type="submit" id="subBtn">submit</button>
+            <div class="new-book-row">
+                <button type="button" id="cancelBtn" autofocus>cancel</button>
+                <button type="submit" id="subBtn">submit</button>
+            </div>
         </form>
     </dialog>
 </body>

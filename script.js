@@ -1,12 +1,35 @@
-const myLibrary = []
-function Book(title, author, pages, isRead) {
-    this.title = title
-    this.author = author
-    this.pages = pages
-    this.isRead = isRead ? 'already read' : 'not read yet'
-    this.uid = crypto.randomUUID()
+class Book {
+    constructor(title, author, pages, isRead) {
+        this.title = title
+        this.author = author
+        this.pages = pages
+        this.isRead = isRead ? 'already read' : 'not read yet'
+        this.uid = crypto.randomUUID()
+    }
 
+    toggleReadStatus() {
+        this.isRead = (this.isRead === 'already read') ? 'not read yet' : 'already read'
+    }
 }
+
+class Library {
+    constructor() {
+        this.books = [] // 这里的 books 代替原来的 myLibrary
+    }
+    addBookToLibrary(book) {
+        this.books.push(book)
+        addCardEl(book)
+    }
+    removeBook(uid) {
+        this.books = this.books.filter((book) => book.uid !== uid)
+    }
+    getBook(uid) {
+        return this.books.find(book => book.uid === uid);
+    }
+}
+// 初始化你的图书馆
+const myLibrary = new Library()
+
 const theHobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 295, 0)
 const toKillAMockingbird = new Book('To Kill a Mockingbird', 'Harper Lee', 281, 1)
 const nineteenEightyFour = new Book('1984', 'George Orwell', 328, true)
@@ -15,15 +38,12 @@ const theGreatGatsby = new Book('The Great Gatsby', 'F. Scott Fitzgerald', 180, 
 
 
 const display = document.querySelector('.display-book')
-function addBookToLibrary(book) {
-    myLibrary.push(book)
-}
 // 将示例加入库
-addBookToLibrary(theHobbit)
-addBookToLibrary(toKillAMockingbird)
-addBookToLibrary(nineteenEightyFour)
-addBookToLibrary(prideAndPrejudice)
-addBookToLibrary(theGreatGatsby)
+myLibrary.addBookToLibrary(theHobbit)
+myLibrary.addBookToLibrary(toKillAMockingbird)
+myLibrary.addBookToLibrary(nineteenEightyFour)
+myLibrary.addBookToLibrary(prideAndPrejudice)
+myLibrary.addBookToLibrary(theGreatGatsby)
 
 function addCardEl(book) {
     //创建card div并添加'card'类和'data-uid'属性
@@ -51,45 +71,22 @@ function addCardEl(book) {
     //添加到display中
     display.append(card)
 }
-myLibrary.forEach((book) => {
-    addCardEl(book)
-})
-console.log(myLibrary);
-
 const bookCards = document.querySelectorAll('.card')
-function deleteBook(e) {
-    const uid = e.target.closest('.card').dataset.uid
-    // 直接修改数组内容，不重新赋值
-    const idx = myLibrary.findIndex(book => book.uid === uid)
-    if (idx > -1) myLibrary.splice(idx, 1)
-    e.target.closest('.card').remove()
-    console.log('delete card');
-}
-function resetBook(e) {
-    const card = e.target.closest('.card')
-    const uid = card.dataset.uid
-    const isReadEl = card.querySelector('.isRead')
-    myLibrary.forEach((book) => {
-        if (book['uid'] === uid) {
-            if (book['isRead'] === 'already read') {
-                book['isRead'] = 'not read yet'
-            } else {
-                book['isRead'] = 'already read'
-            }
-            isReadEl.textContent = book.isRead
-            return book
-        }
-    })
-
-}
-
 if (display) {
     display.addEventListener('click', (e) => {
         if (e.target.classList.contains('deleteBtn')) {
-            deleteBook(e)
+            const uid = e.target.closest('.card').dataset.uid
+            myLibrary.removeBook(uid)
+            e.target.closest('.card').remove()
+            console.log('delete card');
         }
         else if (e.target.classList.contains('resetBtn')) {
-            resetBook(e)
+            const card = e.target.closest('.card')
+            const uid = card.dataset.uid
+            const isRead = card.querySelector('.isRead')
+            const bookToToggle = myLibrary.getBook(uid)
+            bookToToggle.toggleReadStatus()
+            isRead.textContent = bookToToggle.isRead
         }
     })
 }
@@ -113,11 +110,9 @@ subBtn.addEventListener('click', (e) => {
     const pages = document.querySelector('#book-pages').value
     const isRead = document.querySelector('#book-isRead').value === '1'
     const newBook = new Book(title, author, pages, isRead)
-    addBookToLibrary(newBook)
-    addCardEl(newBook)
+    myLibrary.addBookToLibrary(newBook)
     form.reset()
     dialog.close()
-
     console.log('book added:', newBook)
 })
 
